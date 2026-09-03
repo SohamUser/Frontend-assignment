@@ -17,7 +17,9 @@ export function resolveSiteUrl(value: string | undefined): URL | null {
   return url;
 }
 
-export const siteUrl = resolveSiteUrl(process.env.SITE_URL);
+export const siteUrl = resolveSiteUrl(
+  process.env.SITE_URL ?? "https://frontend-assignment-nine-gamma.vercel.app",
+);
 
 export function pageMetadata(title: string, description: string, path: string, image = "/og"): Metadata {
   return {

@@ -24,7 +24,7 @@ test("sitemap includes the canonical catalog only, with no cart or filter URLs",
   assert.deepEqual(createRobots(origin), { rules: { userAgent: "*", allow: "/" }, sitemap: "https://store.example/sitemap.xml" });
 });
 
-test("an unconfigured build does not advertise localhost to crawlers", () => {
+test("an explicitly disabled origin does not advertise localhost to crawlers", () => {
   assert.deepEqual(createSitemap(null), []);
   assert.deepEqual(createRobots(null), { rules: { userAgent: "*", disallow: "/" } });
 });

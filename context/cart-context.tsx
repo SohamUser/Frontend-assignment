@@ -46,6 +46,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [state.lines, state.isHydrated, state.storageAvailable]);
 
+  useEffect(() => {
+    if (!state.message) return;
+
+    const timeout = setTimeout(() => dispatch({ type: "dismiss" }), 3000);
+    return () => clearTimeout(timeout);
+    // Restart even when consecutive cart updates produce the same message.
+  }, [state.message, state.announcementId]);
+
   const value: CartContextValue = {
     ...cartSummary(state.lines),
     lines: state.lines,

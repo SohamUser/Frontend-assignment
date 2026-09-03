@@ -18,15 +18,17 @@ Generated using the built-in image generation tool, then exported to icon sizes 
 
 ## Public domain configuration
 
-Set `SITE_URL` to the final public origin **before running the production build**, for example `https://your-domain.com`. Use the actual domain, without a path, query, or fragment. `.env.example` documents this setting; `.env.local` stays ignored. Restart the development server after changing it. Rebuild production whenever the public origin changes because these pages and metadata routes are prerendered.
+The store is live at [frontend-assignment-nine-gamma.vercel.app](https://frontend-assignment-nine-gamma.vercel.app/). This is the default public origin in `lib/seo.ts` when `SITE_URL` is unset, and is included in `.env.example`.
 
-No public domain was supplied during implementation. With `SITE_URL` blank:
+To override it, set `SITE_URL` **before running the production build**. Use an HTTP(S) origin without a path, query, or fragment. `.env.local` stays ignored. Restart the development server after changing it. Rebuild production whenever the public origin changes because these pages and metadata routes are prerendered.
+
+With `SITE_URL` explicitly blank (for example, in a local or preview environment):
 
 - Pages use `noindex, follow`; `robots.txt` disallows crawling.
 - The sitemap is empty and canonical URLs are omitted.
 - Social image URLs resolve against localhost for local testing.
 
-Once configured, home and product pages become indexable, canonical and social URLs use that origin, and `/sitemap.xml` lists the homepage plus all 10 product routes. Query variations canonicalize to the homepage. The cart always remains `noindex, follow` and is excluded from the sitemap. Unknown product routes return HTTP 404.
+By default, home and product pages are indexable, canonical and social URLs use the live origin, and `/sitemap.xml` lists the homepage plus all 10 product routes. Query variations canonicalize to the homepage. The cart always remains `noindex, follow` and is excluded from the sitemap. Unknown product routes return HTTP 404.
 
 ## Implemented SEO
 
@@ -49,4 +51,4 @@ References: [Next.js metadata](https://nextjs.org/docs/app/api-reference/file-co
 - Favicon, PNG icon, Apple icon, header mark, social preview, robots, and sitemap return 200 with the expected content types. Social preview inspected at 1200 × 630.
 - Production browser checks: combined direct query filters, search/category changes, Clear filters, product navigation, back/forward restoration, cart addition, refresh persistence, quantity changes ($699 → $1,398 → $699), and removal.
 
-Live-domain crawling, search-engine indexing, Search Console ownership/submission, and external social-card fetches require the final hosted URL and were not performed. No deployment was made.
+The user deployed the store to the live Vercel URL above. Live-domain crawling, search-engine indexing, Search Console ownership/submission, and external social-card fetches have not been verified here. Local configuration changes require redeployment to take effect on the live site.
