@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { DEFAULT_FILTERS } from "../lib/filter-products";
+import { DEFAULT_FILTERS, filterProducts } from "../lib/filter-products";
+import { products } from "../data/products";
 import { homeSearchLocation, readFilterParams, writeFilterParams } from "../lib/filter-url";
 
 test("direct links parse all three controls", () => {
@@ -50,4 +51,21 @@ test("off-home search targets home without retaining invisible category/price co
   assert.deepEqual(homeSearchLocation("coupon=SAVE&category=home&price=0-20", "phone"), {
     pathname: "/", search: "coupon=SAVE&q=phone",
   });
+});
+
+test("encoded direct links produce the same combined results after canonicalization", () => {
+  const search = "tag=a&tag=b&category=electronics&price=0-199&q=%20pHoNe%20";
+  const filters = readFilterParams(new URLSearchParams(search));
+  const canonical = writeFilterParams(search, filters);
+  for (const value of [filters, readFilterParams(new URLSearchParams(canonical))]) {
+    assert.deepEqual(filterProducts(products, value).map(({ id }) => id), ["wireless-headphones"]);
+  }
+  assert.deepEqual(new URLSearchParams(canonical).getAll("tag"), ["a", "b"]);
+});
+
+test("duplicate owned keys use the first value and reserved query characters remain literal", () => {
+  const filters = readFilterParams(new URLSearchParams("category=home&category=electronics&price=0-89&price=0-699&q=lamp%26q%3Dphone&q=lamp"));
+  assert.deepEqual(filters, { category: "home", maxPrice: 89, query: "lamp&q=phone" });
+  assert.deepEqual(filterProducts(products, filters), []);
+  assert.deepEqual(readFilterParams(new URLSearchParams(writeFilterParams("", filters))), filters);
 });

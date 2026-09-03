@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { PageContainer } from "@/components/layout/page-container";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -6,16 +6,21 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { ProductFiltersProvider } from "@/context/product-filters-context";
 import { CartProvider } from "@/context/cart-context";
 import { CartFeedback } from "@/components/cart/cart-feedback";
+import { siteDescription, siteName, siteUrl } from "@/lib/seo";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: siteUrl ?? new URL("http://localhost:3000"),
+  applicationName: siteName,
   title: {
     default: "WhatBytes Store",
     template: "%s | WhatBytes Store",
   },
-  description:
-    "WhatBytes Store is a demo storefront for electronics, clothing, and home essentials.",
+  description: siteDescription,
+  robots: { index: Boolean(siteUrl), follow: true },
 };
+
+export const viewport: Viewport = { themeColor: "#0f2a5c" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

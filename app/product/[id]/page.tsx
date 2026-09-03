@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ProductDetail } from "@/components/products/product-detail";
 import { products } from "@/data/products";
 import { getProductById } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/seo";
 
 // This local catalog is complete; unknown IDs should return an HTTP 404 before streaming.
 export const dynamicParams = false;
@@ -16,10 +17,7 @@ export async function generateMetadata({ params }: PageProps<"/product/[id]">): 
   const product = getProductById(id);
   if (!product) notFound();
 
-  return {
-    title: product.title,
-    description: product.description,
-  };
+  return pageMetadata(product.title, product.description, `/product/${product.id}`, product.image);
 }
 
 export default async function ProductPage({ params }: PageProps<"/product/[id]">) {

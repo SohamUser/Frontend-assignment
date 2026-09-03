@@ -128,3 +128,26 @@ test("cart continues in memory when saving is unavailable", () => {
   assert.equal(state.lines[0].quantity, 2);
   assert.equal(state.storageAvailable, false);
 });
+
+test("mixed cart totals stay exact through quantity changes, removal and reload", () => {
+  let lines = addCartLine([], "running-shoes", 2);
+  lines = addCartLine(lines, "smartphone", 3);
+  lines = addCartLine(lines, "t-shirt", 4);
+  assert.equal(cartSummary(lines).subtotalCents, 241100);
+  lines = decrementCartLine(lines, "smartphone");
+  lines = removeCartLine(lines, "running-shoes");
+  assert.equal(cartSummary(lines).subtotalCents, 151400);
+  assert.equal(cartSummary(lines).totalQuantity, 6);
+  const memory = memoryStorage();
+  persistCart(() => memory.storage, lines, true);
+  assert.deepEqual(cartSummary(readSavedCart(() => memory.storage).lines), cartSummary(lines));
+});
+
+test("safe cent limit is enforced across different products without discarding the cart", () => {
+  const quantity = Math.floor(Number.MAX_SAFE_INTEGER / 69900);
+  const lines = addCartLine([], "smartphone", quantity);
+  assert.equal(lines[0].quantity, quantity);
+  assert.ok(Number.isSafeInteger(cartSummary(lines).subtotalCents));
+  assert.equal(addCartLine(lines, "smartphone", 1), lines);
+  assert.equal(addCartLine(lines, "running-shoes", 8), lines);
+});

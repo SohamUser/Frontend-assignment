@@ -1,11 +1,11 @@
 "use client";
 
 import {
-  createContext, useContext, useEffect, useLayoutEffect, useState,
+  createContext, Suspense, useContext, useEffect, useLayoutEffect, useState,
   useSyncExternalStore, type ReactNode,
 } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { type FilterCategory, type ProductFilters } from "@/lib/filter-products";
+import { DEFAULT_FILTERS, type FilterCategory, type ProductFilters } from "@/lib/filter-products";
 import { FilterUrlStore } from "@/lib/filter-url-store";
 
 interface ProductFiltersContextValue {
@@ -17,21 +17,25 @@ interface ProductFiltersContextValue {
   submitSearch: () => void;
 }
 
-const ProductFiltersContext = createContext<ProductFiltersContextValue | null>(null);
+const ProductFiltersContext = createContext<FilterUrlStore | null>(null);
+const getServerFilters = () => DEFAULT_FILTERS;
 
-export function ProductFiltersProvider({ children }: { children: ReactNode }) {
-  const router = useRouter();
+// Only URL observation needs client rendering; the catalog stays in the static HTML.
+function FilterLocationObserver({ store }: { store: FilterUrlStore }) {
   const pathname = usePathname();
   const search = useSearchParams().toString();
-  const [store] = useState(() => new FilterUrlStore({ pathname, search }, {
-    replace: (href) => router.replace(`${href}${window.location.hash}`, { scroll: false }),
-    readLocation: () => ({ pathname: window.location.pathname, search: window.location.search.slice(1) }),
-  }));
-  const filters = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
-
   useLayoutEffect(() => {
     store.observe({ pathname, search });
   }, [pathname, search, store]);
+  return null;
+}
+
+export function ProductFiltersProvider({ children }: { children: ReactNode }) {
+  const router = useRouter();
+  const [store] = useState(() => new FilterUrlStore({ pathname: "/", search: "" }, {
+    replace: (href) => router.replace(`${href}${window.location.hash}`, { scroll: false }),
+    readLocation: () => ({ pathname: window.location.pathname, search: window.location.search.slice(1) }),
+  }));
 
   useEffect(() => {
     const onPopState = () => store.restore({
@@ -61,26 +65,27 @@ export function ProductFiltersProvider({ children }: { children: ReactNode }) {
     };
   }, [store]);
 
-  const value: ProductFiltersContextValue = {
-    filters,
-    setCategory: store.setCategory,
-    setMaxPrice: store.setMaxPrice,
-    setQuery: store.setQuery,
-    clearFilters: store.clearFilters,
-    submitSearch: store.submitSearch,
-  };
-
   return (
-    <ProductFiltersContext.Provider value={value}>
+    <ProductFiltersContext.Provider value={store}>
+      <Suspense fallback={null}><FilterLocationObserver store={store} /></Suspense>
       {children}
     </ProductFiltersContext.Provider>
   );
 }
 
-export function useProductFilters() {
-  const context = useContext(ProductFiltersContext);
-  if (!context) {
+export function useProductFilters(): ProductFiltersContextValue {
+  const store = useContext(ProductFiltersContext);
+  if (!store) {
     throw new Error("useProductFilters must be used within ProductFiltersProvider");
   }
-  return context;
+  return useFilterStore(store);
+}
+
+function useFilterStore(store: FilterUrlStore): ProductFiltersContextValue {
+  // Each consumer hydrates with the same snapshot even if URL observation ran first.
+  const filters = useSyncExternalStore(store.subscribe, store.getSnapshot, getServerFilters);
+  return {
+    filters, setCategory: store.setCategory, setMaxPrice: store.setMaxPrice,
+    setQuery: store.setQuery, clearFilters: store.clearFilters, submitSearch: store.submitSearch,
+  };
 }

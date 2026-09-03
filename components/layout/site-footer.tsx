@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SocialIcon } from "@/components/icons/social-icon";
 import { PageContainer } from "@/components/layout/page-container";
 
@@ -11,15 +12,19 @@ export function SiteFooter() {
   return (
     <footer className="bg-footer py-8 text-white sm:py-9">
       <PageContainer>
-        <div className="grid grid-cols-2 gap-x-8 gap-y-7 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-7 sm:grid-cols-3">
           <section aria-labelledby="footer-filters">
             <h2 id="footer-filters" className="text-section-title font-semibold">
               Filters
             </h2>
-            {/* Labels remain non-interactive until filtering is implemented. */}
-            <ul className="mt-4 space-y-2 text-sm text-on-dark-muted">
+            <ul className="mt-3 text-sm text-on-dark-muted">
               {["All", "Electronics", "Clothing", "Home"].map((category) => (
-                <li key={category}>{category}</li>
+                <li key={category}>
+                  <Link href={category === "All" ? "/" : `/?category=${category.toLowerCase()}`}
+                    className="inline-flex min-h-11 items-center rounded-sm hover:text-white hover:underline">
+                    {category}
+                  </Link>
+                </li>
               ))}
             </ul>
           </section>
@@ -36,7 +41,7 @@ export function SiteFooter() {
             <h2 id="footer-social" className="text-section-title font-semibold">
               Follow Us
             </h2>
-            <ul className="mt-3 flex gap-1">
+            <ul className="-ml-1.5 mt-3 flex gap-1">
               {socialLinks.map(({ label, href, icon }) => (
                 <li key={label}>
                   <a

@@ -18,9 +18,11 @@ for (const product of products) {
     assert.equal(getProductById(product.id), product);
     const page = await ProductPage(props(product.id));
     assert.equal(page.props.product, product);
-    assert.deepEqual(await generateMetadata(props(product.id)), {
-      title: product.title, description: product.description,
-    });
+    const metadata = await generateMetadata(props(product.id));
+    assert.equal(metadata.title, product.title);
+    assert.equal(metadata.description, product.description);
+    assert.equal(metadata.openGraph?.title, `${product.title} | WhatBytes Store`);
+    assert.deepEqual(metadata.twitter?.images, [product.image]);
   });
 }
 

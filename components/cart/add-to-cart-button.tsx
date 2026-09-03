@@ -9,7 +9,7 @@ export function AddToCartButton({ productId, quantity = 1 }: { productId: string
       type="button"
       disabled={!isHydrated}
       onClick={() => add(productId, quantity)}
-      className="min-h-11 w-full rounded-md bg-accent px-3 py-2 text-body font-semibold text-white enabled:hover:bg-navy disabled:cursor-wait disabled:opacity-55"
+      className="min-h-11 w-full rounded-md bg-accent px-3 py-2 text-body font-semibold text-white transition-colors enabled:hover:bg-navy enabled:active:bg-footer disabled:cursor-wait disabled:opacity-55"
     >
       {isHydrated ? "Add to Cart" : "Loading cart..."}
     </button>

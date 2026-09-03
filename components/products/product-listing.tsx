@@ -19,10 +19,10 @@ export function ProductListing({ products }: { products: readonly Product[] }) {
         onClear={clearFilters}
       />
       <section aria-labelledby="product-listing-heading" className="min-w-0">
-        <h1 id="product-listing-heading" className="mb-3 text-page-title font-bold text-navy">
+        <h1 id="product-listing-heading" className="mb-4 text-page-title font-bold text-navy">
           Product Listing
         </h1>
-        <p role="status" aria-atomic="true" className="my-4 text-caption text-muted">
+        <p role="status" aria-atomic="true" className="sr-only">
           {visibleProducts.length === 0
             ? "0 products found"
             : `${visibleProducts.length} ${visibleProducts.length === 1 ? "product" : "products"} found`}

@@ -4,10 +4,12 @@ import { ProductPurchaseControls } from "@/components/products/product-purchase-
 import { StarRating } from "@/components/products/star-rating";
 import { formatPrice } from "@/lib/format-price";
 import type { Product } from "@/types/product";
+import { productStructuredData, serializeJsonLd } from "@/lib/seo";
 
 export function ProductDetail({ product }: { product: Product }) {
   return (
     <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(productStructuredData(product)) }} />
       <Link href="/" className="mb-6 inline-flex min-h-11 items-center rounded-sm text-body font-semibold text-accent hover:underline">
         Back to products
       </Link>
