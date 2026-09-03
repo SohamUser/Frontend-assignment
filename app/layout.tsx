@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { PageContainer } from "@/components/layout/page-container";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -21,12 +22,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
-        <ProductFiltersProvider>
-          <SiteHeader />
-          <main id="main-content" tabIndex={-1} className="min-h-96 flex-1 py-8 md:py-10">
-            <PageContainer>{children}</PageContainer>
-          </main>
-        </ProductFiltersProvider>
+        <Suspense
+          fallback={
+            <main id="main-content" tabIndex={-1} className="min-h-96 flex-1 py-8 md:py-10">
+              <PageContainer><p role="status">Loading storefront...</p></PageContainer>
+            </main>
+          }
+        >
+          <ProductFiltersProvider>
+            <SiteHeader />
+            <main id="main-content" tabIndex={-1} className="min-h-96 flex-1 py-8 md:py-10">
+              <PageContainer>{children}</PageContainer>
+            </main>
+          </ProductFiltersProvider>
+        </Suspense>
         <SiteFooter />
       </body>
     </html>

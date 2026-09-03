@@ -56,7 +56,7 @@ export function FilterSidebar({
           type="range"
           min={MIN_PRICE}
           max={MAX_PRICE}
-          step={1}
+          step={Number.isInteger(filters.maxPrice) ? 1 : "any"}
           value={filters.maxPrice}
           onChange={(event) => onMaxPriceChange(event.target.valueAsNumber)}
           aria-valuetext={`Up to ${formatPrice(filters.maxPrice)}`}
