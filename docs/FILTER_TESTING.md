@@ -44,9 +44,10 @@ For browser checks, run `npm run dev` and open the printed local URL:
   Forward. The controls and products must follow each restored URL. Start typing
   immediately before navigating to verify an old timeout never restores that query.
 - Clear filters removes only `category`, `price`, and `q`; unrelated keys survive.
-- Cart and detail routes remain deferred. The shared search form is prepared to
-  submit to `/?q=...` from either route; typing there does not navigate until submit.
-  This off-home behavior is tested in the URL store without adding those routes.
+- From a product detail page, submit a shared header search to return to `/?q=...`;
+  typing there does not navigate until submit. See `PRODUCT_TESTING.md` for details.
+  The cart route remains deferred; its off-home submission behavior is covered by
+  the URL store tests without adding a cart page.
 
 Cart buttons remain disabled. Filter edits use replace, so each keystroke does not
 create a Back-button entry; navigate between pages/links when testing history.
