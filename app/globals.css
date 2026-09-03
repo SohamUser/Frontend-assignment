@@ -34,7 +34,7 @@ body {
   outline-offset: 4px;
 }
 
-:where(header, footer) :where(a, button, input):focus-visible {
+:where(header, footer, .filter-sidebar) :where(a, button, input):focus-visible {
   outline-color: #ffffff;
 }
 
@@ -53,4 +53,41 @@ body {
 
 .skip-link:focus {
   transform: translateY(0);
+}
+
+/* Keep the track and blue thumb distinguishable against the navy sidebar. */
+.price-slider {
+  appearance: none;
+  background: transparent;
+}
+
+.price-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-on-dark-muted);
+}
+
+.price-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -5px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.price-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-on-dark-muted);
+}
+
+.price-slider::-moz-range-thumb {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background: var(--color-accent);
 }

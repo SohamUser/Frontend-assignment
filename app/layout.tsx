@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageContainer } from "@/components/layout/page-container";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { ProductFiltersProvider } from "@/context/product-filters-context";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,10 +21,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
-        <SiteHeader />
-        <main id="main-content" tabIndex={-1} className="min-h-96 flex-1 py-8 md:py-10">
-          <PageContainer>{children}</PageContainer>
-        </main>
+        <ProductFiltersProvider>
+          <SiteHeader />
+          <main id="main-content" tabIndex={-1} className="min-h-96 flex-1 py-8 md:py-10">
+            <PageContainer>{children}</PageContainer>
+          </main>
+        </ProductFiltersProvider>
         <SiteFooter />
       </body>
     </html>

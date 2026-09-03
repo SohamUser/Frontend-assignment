@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Search, ShoppingCart, UserRound } from "lucide-react";
+import { ShoppingCart, UserRound } from "lucide-react";
 import { PageContainer } from "@/components/layout/page-container";
+import { ProductSearch } from "@/components/products/product-search";
 
 export function SiteHeader() {
   return (
@@ -13,29 +14,7 @@ export function SiteHeader() {
         >
           WhatBytes
         </Link>
-        <div className="relative col-span-2 row-start-2 md:col-span-1 md:col-start-2 md:row-start-1">
-          <label htmlFor="product-search" className="sr-only">
-            Search for products
-          </label>
-          <Search
-            size={18}
-            strokeWidth={1.75}
-            aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-on-dark-muted"
-          />
-          <input
-            id="product-search"
-            type="search"
-            readOnly
-            value=""
-            aria-describedby="search-availability"
-            placeholder="Search for products..."
-            className="h-11 w-full rounded-md border border-white/35 bg-white/5 pr-4 pl-11 text-sm text-white placeholder:text-on-dark-muted"
-          />
-          <span id="search-availability" className="sr-only">
-            Product search is not available yet.
-          </span>
-        </div>
+        <ProductSearch />
         <nav aria-label="Store navigation" className="flex items-center justify-end gap-3 md:col-start-3">
           {/* The cart route is intentionally reserved for a later phase. */}
           <Link
