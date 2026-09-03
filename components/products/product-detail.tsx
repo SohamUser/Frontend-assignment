@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { QuantitySelector } from "@/components/products/quantity-selector";
+import { ProductPurchaseControls } from "@/components/products/product-purchase-controls";
 import { StarRating } from "@/components/products/star-rating";
 import { formatPrice } from "@/lib/format-price";
 import type { Product } from "@/types/product";
@@ -36,20 +36,7 @@ export function ProductDetail({ product }: { product: Product }) {
             <dt className="font-semibold">Category</dt>
             <dd className="mt-1 capitalize text-muted">{product.category}</dd>
           </dl>
-          <div className="mt-7">
-            <QuantitySelector key={product.id} />
-          </div>
-          <button
-            type="button"
-            disabled
-            aria-describedby="detail-cart-unavailable"
-            className="mt-6 min-h-11 w-full rounded-md bg-accent px-4 py-3 text-body font-semibold text-white disabled:cursor-not-allowed disabled:opacity-55"
-          >
-            Add to Cart
-          </button>
-          <p id="detail-cart-unavailable" className="mt-3 text-caption text-muted">
-            Adding items to the cart is not available yet.
-          </p>
+          <ProductPurchaseControls key={product.id} productId={product.id} />
         </div>
       </article>
     </div>

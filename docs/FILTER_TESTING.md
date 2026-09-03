@@ -46,10 +46,9 @@ For browser checks, run `npm run dev` and open the printed local URL:
 - Clear filters removes only `category`, `price`, and `q`; unrelated keys survive.
 - From a product detail page, submit a shared header search to return to `/?q=...`;
   typing there does not navigate until submit. See `PRODUCT_TESTING.md` for details.
-  The cart route remains deferred; its off-home submission behavior is covered by
-  the URL store tests without adding a cart page.
+  Repeat from `/cart`; typing must stay on the cart page until submission.
 
-Cart buttons remain disabled. Filter edits use replace, so each keystroke does not
+Cart buttons enable after cart hydration. Filter edits use replace, so each keystroke does not
 create a Back-button entry; navigate between pages/links when testing history.
 
 The result count is a polite live region; individual stars are hidden from

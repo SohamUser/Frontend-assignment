@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ShoppingCart, UserRound } from "lucide-react";
+import { UserRound } from "lucide-react";
+import { CartLink } from "@/components/cart/cart-link";
 import { PageContainer } from "@/components/layout/page-container";
 import { ProductSearch } from "@/components/products/product-search";
 
@@ -16,19 +17,7 @@ export function SiteHeader() {
         </Link>
         <ProductSearch />
         <nav aria-label="Store navigation" className="flex items-center justify-end gap-3 md:col-start-3">
-          {/* The cart route is intentionally reserved for a later phase. */}
-          <Link
-            href="/cart"
-            prefetch={false}
-            aria-label="Cart, 0 items"
-            className="flex min-h-11 items-center gap-2 rounded-md bg-footer px-3 text-sm font-semibold transition-colors hover:bg-black/40 sm:px-4"
-          >
-            <ShoppingCart size={18} aria-hidden="true" />
-            <span>Cart</span>
-            <span aria-hidden="true" className="flex size-5 items-center justify-center rounded-full bg-accent text-caption font-bold">
-              0
-            </span>
-          </Link>
+          <CartLink />
           <span aria-hidden="true" className="flex size-9 shrink-0 items-center justify-center rounded-full border border-white/30 bg-white/10">
             <UserRound size={19} strokeWidth={1.75} />
           </span>

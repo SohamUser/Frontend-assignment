@@ -14,7 +14,8 @@ Run `npm run dev`, then use the printed local URL:
 3. Quantity begins at 1 with Decrease disabled. Increase several times, then
    decrease back to 1. Try keyboard Tab/Enter/Space. Quantity must remain an integer
    and never drop below 1. Choosing a different product starts its quantity at 1.
-4. Add to Cart remains disabled at every quantity; the header badge stays at zero.
+4. After cart hydration, Add to Cart adds the selected quantity. Verify the header
+   badge and confirmation update. See `CART_TESTING.md` for persistence and totals.
 5. Open `/product/not-a-product`. Expect HTTP 404, “Page not found,” and a working
    “Back to products” link, not a runtime error. Only catalog IDs are pre-rendered;
    `dynamicParams = false` rejects other slugs before a response is streamed.
@@ -25,7 +26,7 @@ Run `npm run dev`, then use the printed local URL:
    sit side by side. Check for undistorted images, visible focus, and no horizontal
    overflow at 320px, 375px, 768px, and 1440px.
 
-No cart page or cart state is implemented in this phase.
+Cart controls are now connected; checkout and payments remain outside this demo.
 
 Local Windows note: the production preview served `/product/SMARTPHONE` as the
 existing lowercase product, consistent with case-insensitive file lookup for

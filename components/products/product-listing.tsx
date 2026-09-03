@@ -22,9 +22,6 @@ export function ProductListing({ products }: { products: readonly Product[] }) {
         <h1 id="product-listing-heading" className="mb-3 text-page-title font-bold text-navy">
           Product Listing
         </h1>
-        <p id="cart-unavailable" className="text-caption text-muted">
-          Browsing preview. Adding items to the cart is not available yet.
-        </p>
         <p role="status" aria-atomic="true" className="my-4 text-caption text-muted">
           {visibleProducts.length === 0
             ? "0 products found"

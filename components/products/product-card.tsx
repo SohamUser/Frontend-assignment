@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { StarRating } from "@/components/products/star-rating";
+import { AddToCartButton } from "@/components/cart/add-to-cart-button";
 import { formatPrice } from "@/lib/format-price";
 import type { Product } from "@/types/product";
 
@@ -63,14 +64,7 @@ export function ProductCard({ product, preloadImage = false }: ProductCardProps)
           </>
         ) : null}
         <div className="mt-auto pt-4">
-          <button
-            type="button"
-            disabled
-            aria-describedby="cart-unavailable"
-            className="min-h-11 w-full rounded-md bg-accent px-3 py-2 text-body font-semibold text-white disabled:cursor-not-allowed disabled:opacity-55"
-          >
-            Add to Cart
-          </button>
+          <AddToCartButton productId={product.id} />
         </div>
       </div>
     </article>
