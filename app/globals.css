@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
+@theme {
+  --color-navy: #0f2a5c;
+  --color-accent: #1e50b8;
+  --color-background: #f4f6fa;
+  --color-footer: #071b3f;
+  --color-foreground: #1a1f2b;
+  --color-muted: #566173;
+  --color-on-dark-muted: #ccd7eb;
+  --font-sans: Arial, Helvetica, sans-serif;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.5;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.6;
+  --text-section-title: 1.125rem;
+  --text-section-title--line-height: 1.4;
+  --text-page-title: 1.75rem;
+  --text-page-title--line-height: 1.25;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+:where(header, footer) :where(a, button, input):focus-visible {
+  outline-color: #ffffff;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 1rem;
+  z-index: 50;
+  transform: translateY(-200%);
+  border-radius: 0.25rem;
+  background: #ffffff;
+  padding: 0.75rem 1rem;
+  color: var(--color-navy);
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
