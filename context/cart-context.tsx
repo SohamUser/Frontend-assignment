@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useReducer, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useReducer, useSyncExternalStore, type ReactNode } from "react";
 import { cartSummary, type CartLine } from "@/lib/cart";
 import { cartReducer, INITIAL_CART } from "@/lib/cart-reducer";
 import { persistCart, readSavedCart } from "@/lib/cart-storage";
@@ -20,6 +20,17 @@ interface CartContextValue extends ReturnType<typeof cartSummary> {
 
 const CartContext = createContext<CartContextValue | null>(null);
 const browserStorage = () => window.localStorage;
+const subscribeToHydration = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+const initialCartSnapshot = {
+  ...cartSummary(INITIAL_CART.lines),
+  lines: INITIAL_CART.lines,
+  isHydrated: INITIAL_CART.isHydrated,
+  storageWarning: INITIAL_CART.storageWarning,
+  message: INITIAL_CART.message,
+  announcementId: INITIAL_CART.announcementId,
+};
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, INITIAL_CART);
@@ -54,6 +65,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export function useCart() {
   const context = useContext(CartContext);
+  // A Suspense consumer may hydrate after the provider has already restored storage.
+  // Keep that consumer's first render identical to its server HTML.
+  const isClient = useSyncExternalStore(subscribeToHydration, getClientSnapshot, getServerSnapshot);
   if (!context) throw new Error("useCart must be used within CartProvider");
-  return context;
+  return isClient ? context : { ...context, ...initialCartSnapshot };
 }
