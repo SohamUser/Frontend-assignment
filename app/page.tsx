@@ -1,12 +1,23 @@
+import { ProductGrid } from "@/components/products/product-grid";
+import { products } from "@/data/products";
+
 export default function Home() {
   return (
-    <section aria-labelledby="store-heading">
-      <h1 id="store-heading" className="text-page-title font-bold text-navy">
-        WhatBytes Store
-      </h1>
-      <p className="mt-3 max-w-prose text-body text-muted">
-        Our storefront is being prepared. The product catalog is coming next.
-      </p>
-    </section>
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
+      {/* Reserve the desktop sidebar column for the later filters phase. */}
+      <div aria-hidden="true" className="hidden lg:block" />
+      <section aria-labelledby="product-listing-heading" className="min-w-0">
+        <h1
+          id="product-listing-heading"
+          className="mb-5 text-page-title font-bold text-navy"
+        >
+          Product Listing
+        </h1>
+        <p id="cart-unavailable" className="mb-5 text-caption text-muted">
+          Browsing preview. Adding items to the cart is not available yet.
+        </p>
+        <ProductGrid products={products} />
+      </section>
+    </div>
   );
 }

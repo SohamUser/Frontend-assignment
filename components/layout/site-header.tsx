@@ -33,7 +33,7 @@ export function SiteHeader() {
             className="h-11 w-full rounded-md border border-white/35 bg-white/5 pr-4 pl-11 text-sm text-white placeholder:text-on-dark-muted"
           />
           <span id="search-availability" className="sr-only">
-            Product search will be available when the catalog is added.
+            Product search is not available yet.
           </span>
         </div>
         <nav aria-label="Store navigation" className="flex items-center justify-end gap-3 md:col-start-3">
